@@ -1,0 +1,38 @@
+#!/bin/bash
+
+usage()
+{
+   echo ""
+   echo "Usage: $0 -d directory -p current directory -h help"
+   echo ""
+   echo "-d   The directory location of your manga"
+   echo "-p   The current directory you are in"
+   echo "-h   To print this help page"
+   exit 1 
+}
+currentDirectory()
+{
+  dir=$(pwd)
+}
+while getopts "d:hp" opt
+do
+   case "$opt" in
+      d ) dir=$HOME/"$OPTARG" ;;
+      p ) currentDirectory ;;
+      h ) usage ;;
+      ? ) usage ;;
+   esac
+done
+
+if [ -z "$dir" ]
+then
+   echo "Invalid directory location. Recheck, I guess!!";
+   usage
+fi
+
+cd "$dir"
+
+for f in Vol*
+do
+  mv "$f" "${f:7}"
+done
