@@ -4,7 +4,7 @@ usage()
 {
    echo
    echo  -e "\033[1mDESCRIPTION:\033[0m"
-   echo  "This will help you to rearrange downloaded mangas"
+   echo  "This will help you to rearrange downloaded manga"
    echo  "into their respective Volumes."
    echo  "link: https://github.com/okarin001/clean_manga"
    echo
