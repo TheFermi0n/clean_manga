@@ -1,41 +1,38 @@
 #!/bin/bash
 
-usage()
-{
+usage() {
    echo
-   echo  -e "\033[1mDESCRIPTION:\033[0m"
-   echo  "This will help you to rearrange downloaded mangas"
-   echo  "into their respective Volumes."
-   echo  "link: https://github.com/okarin001/clean_manga"
+   echo -e "\033[1mDESCRIPTION:\033[0m"
+   echo "This will help you in rearranging downloaded mangas"
+   echo "into their respective Volumes."
+   echo "link: https://github.com/okarin001/clean_manga"
    echo
-   echo  -e "\033[1mUSAGE:\033[0m"
-   echo  ""$(basename "$0")" [-d directory]"
-   echo  ""$(basename "$0")" [-p ]"
-   echo  ""$(basename "$0")" [-h ]"
+   echo -e "\033[1mUSAGE:\033[0m"
+   echo ""$(basename "$0")" [-d directory]"
+   echo ""$(basename "$0")" [-p ]"
+   echo ""$(basename "$0")" [-h ]"
    echo
-   echo  -e "\033[1mOPTION:\033[0m"
-   echo  "-d      The directory location of your manga."
-   echo  "-p      Uses the current directory you are in."
-   echo  "-h      To print this help page"
-   exit  1
+   echo -e "\033[1mOPTION:\033[0m"
+   echo "-d      The directory location of your manga."
+   echo "-p      Detects the current directory you are in."
+   echo "        Useful when you're already inside the folder."
+   echo "-h      To print this help page"
+   exit 1
 }
-currentDirectory()
-{
-  x=$(pwd)
+currentDirectory() {
+   x=$(pwd)
 }
-while getopts "d:hp" opt
-do
+while getopts "d:hp" opt; do
    case "$opt" in
-      d ) x=$HOME/"$OPTARG" ;;
-      p ) currentDirectory ;;
-      h ) usage ;;
-      ? ) usage ;;
+   d) x=$HOME/"$OPTARG" ;;
+   p) currentDirectory ;;
+   h) usage ;;
+   ?) usage ;;
    esac
 done
 
-if [ -z "$x" ]
-then
-   echo -e "\033[1mERR!\033[0m" "Cannot be used without any argument. Read the help section below.";
+if [ -z "$x" ]; then
+   echo -e "\033[1mERR!\033[0m" "Cannot be used without any argument. Read the help section below."
    usage
 fi
 
@@ -44,18 +41,18 @@ cd "$x"
 for f in Vol*; do
    num=${f:4:2}
    dir=temp"$num"
-   
+
    mkdir -p "$dir"
    mv "$f" "$dir"/
-   
-      ( 
-         cd "$dir"
-         for i in Vol*; do
-            mv "$i" "${i:7}"
-         done
-         zip -qr Vol"$num".zip . -x ".DS_Store" -x "__MACOSX"
-         mv Vol"$num".zip "$x" 
-      )
+
+   (
+      cd "$dir"
+      for i in Vol*; do
+         mv "$i" "${i:7}"
+      done
+      zip -qr Vol"$num".zip . -x ".DS_Store" -x "__MACOSX"
+      mv Vol"$num".zip "$x"/Vol\ "$num".cbz
+   )
 done
 
 for j in temp*; do
